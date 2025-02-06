@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+    @apply px-[12px] py-[5px] rounded-full font-medium text-[14px] sm:text-[16px]
+}
+
+.btn-primary {
+    @apply bg-orange-600 hover:bg-orange-500 text-white duration-75 active:scale-95
+}
+
+hr {
+  @apply border-zinc-600
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #c6c6c6;
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #929292;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
