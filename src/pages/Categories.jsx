@@ -1,12 +1,18 @@
-import { AiFillEdit } from "react-icons/ai"; 
-import { FaTrash } from "react-icons/fa"; 
+import { AiFillEdit } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'motion/react'
+import { useLocation } from "react-router";
+import { btnData } from "../services/const";
+import { openModalAlert } from "../store/actionSlice/actionSlice";
 
 const Categories = () => {
   const { categories } = useSelector(state => state.categories)
+  const dispatch = useDispatch()
   console.log(categories)
+  const { pathname } = useLocation()
+  const selectBtnData = btnData.find(item => item.path === pathname)
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -14,46 +20,59 @@ const Categories = () => {
       viewport={{ once: false, amount: 0.1 }}
       transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
       className="p-[7px] overflow-x-auto">
-      <table className="w-full rounded-sm overflow-hidden text-[12px] md:text-[14px]">
-        <thead className="border-[1px] border-zinc-600">
-          <tr className="bg-zinc-700 text-neutral-300">
-            <th className="py-1 px-2 text-center border-r border-zinc-500 w-[40px]">#</th>
-            <th className="py-1 px-2 text-center border-r border-zinc-500">
+      <div className="flex justify-between items-center gap-1">
+        <div className="flex justify-start items-center gap-1 ml-[5px]">
+          <div>
+            {selectBtnData.icon()}
+          </div>
+          <h4 className="font-medium">{selectBtnData.title}</h4>
+        </div>
+        <div>
+          <button onClick={() => dispatch(openModalAlert("create-category"))} className="px-[10px] py-[4px] border-[1px] rounded-sm duration-100 bg-orange-600 border-orange-600 border-opacity-20 font-semibold text-[14px] hover:bg-orange-500 active:scale-95 active:bg-orange-600">
+            + Add category
+          </button>
+        </div>
+      </div>
+      <hr className="mt-[4px] mb-[7px]" />
+      <table className="table-data">
+        <thead>
+          <tr>
+            <th className="text-center w-[40px]">#</th>
+            <th className="text-center">
               Name-Ru
             </th>
-            <th className="py-1 px-2 text-center border-r border-zinc-500">
+            <th className="text-center">
               Name-En
             </th>
-            <th className="py-1 px-2 text-center border-r border-zinc-500 w-[150px]">
+            <th className="text-center w-[150px]">
               Image
             </th>
-            <th className="py-1 px-2 text-center w-[150px]">
+            <th className="text-center w-[150px]">
               Action
             </th>
           </tr>
         </thead>
-        <tbody className="border-[1px] border-zinc-600">
+        <tbody>
           {categories.map((category, index) => (
             <tr
               key={category.id}
-              className="border-t border-zinc-600 duration-100 bg-zinc-800 hover:bg-gray-800 cursor-pointer"
             >
-              <td className="py-2 font-medium text-center px-2 border-r border-zinc-600 w-[40px]">{index + 1}</td>
-              <td className="py-2 font-medium px-2 border-r border-zinc-600 ">
+              <td className="text-center  w-[40px]">{index + 1}</td>
+              <td>
                 {category?.name_ru}
               </td>
-              <td className="py-2 font-medium px-2 border-r border-zinc-600">
+              <td>
                 {category?.name_en}
               </td>
-              <td className="py-2 font-medium px-2 border-r border-zinc-600 text-center">
-                <img className='w-full h-[50px] rounded-sm object-cover border-[1px] border-zinc-700' src={`https://realauto.limsa.uz/api/uploads/images/${category?.image_src}`} alt={"category-image"} />
+              <td className="text-center">
+                <img className='table-image' src={`https://realauto.limsa.uz/api/uploads/images/${category?.image_src}`} alt={"category-image"} />
               </td>
-              <td className="py-2 font-medium px-2 text-center border-r border-zinc-600">
+              <td className="text-center">
                 <div className="w-full flex justify-between items-center gap-2">
-                  <button className="py-[5px] px-[10px] border-[1px] border-blue-500 text-[14px] rounded-sm bg-opacity-0 hover:bg-opacity-10 duration-100 bg-blue-600 text-blue-500 active:scale-95 active:bg-opacity-0 hover:bg-blue-400 flex-1 flex justify-center items-center">
+                  <button className="btn-update">
                     <AiFillEdit />
                   </button>
-                  <button className="py-[5px] px-[10px] border-[1px] border-red-500 text-[14px] rounded-sm bg-opacity-0 hover:bg-opacity-10 duration-100 bg-red-600 text-red-500 active:scale-95 active:bg-opacity-0 hover:bg-red-400 flex-1 flex justify-center items-center">
+                  <button className="btn-delete">
                     <FaTrash />
                   </button>
                 </div>

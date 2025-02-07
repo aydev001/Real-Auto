@@ -1,10 +1,85 @@
+import { AiFillEdit } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { motion } from 'motion/react'
+import { useLocation } from "react-router";
+import { btnData } from "../services/const";
 
 const Cities = () => {
+  const { cities } = useSelector(state => state.cities)
+  console.log(cities)
+  const { pathname } = useLocation()
+  const selectBtnData = btnData.find(item => item.path === pathname)
   return (
-    <div>
-      Cities
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: [0, 1], y: [10, -5, 0] }}
+      viewport={{ once: false, amount: 0.1 }}
+      transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
+      className="p-[7px] overflow-x-auto">
+      <div className="flex justify-between items-center gap-1">
+        <div className="flex justify-start items-center gap-1 ml-[5px]">
+          <div>
+            {selectBtnData.icon()}
+          </div>
+          <h4 className="font-medium">{selectBtnData.title}</h4>
+        </div>
+        <div>
+          <button className="px-[10px] py-[4px] border-[1px] rounded-sm duration-100 bg-orange-600 border-orange-600 border-opacity-20 font-semibold text-[14px] hover:bg-orange-500 active:scale-95 active:bg-orange-600">
+            + Add city
+          </button>
+        </div>
+      </div>
+      <hr className="mt-[4px] mb-[7px]" />
+      <table className="table-data">
+        <thead>
+          <tr>
+            <th className="text-center w-[40px]">#</th>
+            <th className="text-center">
+              Name
+            </th>
+            <th className="text-center">
+              Description
+            </th>
+            <th className="text-center w-[150px]">
+              Image
+            </th>
+            <th className="text-center w-[150px]">
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {cities.map((city, index) => (
+            <tr
+              key={city.id}
+            >
+              <td className="text-center  w-[40px]">{index + 1}</td>
+              <td>
+                {city?.name}
+              </td>
+              <td>
+                {city?.text}
+              </td>
+              <td className="text-center">
+                <img className='table-image' src={`https://realauto.limsa.uz/api/uploads/images/${city?.image_src}`} alt={"city-image"} />
+              </td>
+              <td className="text-center">
+                <div className="w-full flex justify-between items-center gap-2">
+                  <button className="btn-update">
+                    <AiFillEdit />
+                  </button>
+                  <button className="btn-delete">
+                    <FaTrash />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </motion.div>
   )
 }
 

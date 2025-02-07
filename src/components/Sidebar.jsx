@@ -23,15 +23,15 @@ const Sidebar = () => {
             viewport={{ once: false, amount: 0.1 }}
             transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
         >
-            <div className="flex justify-center items-center font-bold text-gray-100 gap-1">
+            <div className="flex justify-center items-center font-bold text-gray-100 gap-1 text-[18px]">
                 <div>
                     Dashboard
                 </div>
             </div>
-            <hr className="my-[5px]" />
+            <hr className="mt-[8px] mb-[7px]" />
             <div className="flex flex-col gap-1">
                 {btnData.map(item => (
-                    <button onClick={() => handdleClick(item.path)} key={item.id} className={`${item.path === pathname ? "bg-zinc-900 border-orange-500 text-orange-500 hover:bg-zinc-900 border-opacity-25" : "bg-neutral-700 text-gray-300 hover:bg-zinc-800 hover:border-zinc-700 border-zinc-600"} duration-200 py-[5px] px-[15px] border-[1px]  active:scale-95 rounded-sm shadow-sm w-full flex justify-start font-semibold items-center gap-1 text-[14px]`}>
+                    <button onClick={() => handdleClick(item.path)} key={item.id} className={`${item.path === pathname ? "bg-[#1a1a1a] border-orange-500 text-orange-500 hover:bg-[#242424] border-opacity-25" : "bg-neutral-700 text-gray-200 hover:bg-zinc-800 hover:border-zinc-700 border-zinc-600"} duration-200 py-[5px] px-[15px] border-[1px]  active:scale-95 rounded-sm shadow-sm w-full flex justify-start font-semibold items-center gap-1 text-[14px]`}>
                         <div className="text-[16px] flex justify-center items-center">
                             {item.icon()}
                         </div>

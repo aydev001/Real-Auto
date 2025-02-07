@@ -62,16 +62,15 @@ const Login = () => {
                     handleSubmit,
                     isSubmitting,
                 }) => (
-                    <form onSubmit={handleSubmit} className='flex flex-col gap-[4px] text-gray-800'>
+                    <form onSubmit={handleSubmit} className='form-data'>
                         <div className='flex flex-col'>
-                            <label className='text-[14px] font-medium text-neutral-200' htmlFor="phone_number">Phone number</label>
+                            <label htmlFor="phone_number">Phone number</label>
                             <input
                                 name="phone_number"
                                 ref={inputRef}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.phone_number}
-                                className='outline-none bg-zinc-800 border-neutral-600 text-white border-[2px] text-[14px] font-medium duration-100 placeholder:text-[14px] hover:border-gray-500 focus:border-orange-500 rounded-md px-[10px] py-[5px]'
                                 type="text"
                                 id='phone_number'
                                 placeholder='Enter the number'
@@ -89,7 +88,6 @@ const Login = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.password}
-                                    className='outline-none bg-zinc-800 border-neutral-600 text-white w-full text-[14px] font-medium border-[2px] duration-100 placeholder:text-[14px] hover:border-gray-500 focus:border-orange-500 rounded-md px-[10px] py-[5px]'
                                     id='password'
                                     placeholder='Enter the password'
                                     autoComplete="current-password" />
@@ -106,7 +104,7 @@ const Login = () => {
                             </div>
                         </div>
                         <hr className="mb-[5px]" />
-                        <button type='submit' disabled={isSubmitting} className={`${isSubmitting ? "cursor-wait" : "cursor-pointer"} flex justify-center items-center gap-1 bg-orange-600 w-full hover:bg-orange-700 active:scale-95 duration-150 text-white font-medium px-[10px] py-[5px] rounded-sm`}>
+                        <button type='submit' disabled={isSubmitting} className={`${isSubmitting ? "cursor-wait" : "cursor-pointer"} btn-form`}>
                             <span>
                                 {isSubmitting ? "Login..." : "Login"}
                             </span>

@@ -15,21 +15,30 @@ import { toggleSidebar } from "./store/actionSlice/actionSlice";
 import { IoIosArrowForward } from "react-icons/io";
 import { fetchBrands } from "./store/brandSlice/brandSlice";
 import { fetchModels } from "./store/modelSlice/modelSlice";
+import { fetchCities } from "./store/citiySlice/citySlice";
+import { fetchLocations } from "./store/locationSlice/locationSlice";
+import { fetchCars } from "./store/carSlice/carSlice";
 
 const App = () => {
   const dispatch = useDispatch()
   const { loading: catLoading, error: catError } = useSelector(state => state.categories)
   const { loading: brandLoading, error: brandError } = useSelector(state => state.brands)
   const { loading: modelLoading, error: modelError } = useSelector(state => state.models)
+  const { loading: cityLoading, error: cityError } = useSelector(state => state.cities)
+  const { loading: locationLoading, error: locationError } = useSelector(state => state.locations)
+  const { loading: carLoading, error: carError } = useSelector(state => state.cars)
   const { isSidebar } = useSelector(state => state.actions)
 
   useEffect(() => {
     dispatch(fetchCategories())
     dispatch(fetchBrands())
     dispatch(fetchModels())
+    dispatch(fetchCities())
+    dispatch(fetchLocations())
+    dispatch(fetchCars())
   }, [dispatch])
   return (
-    <div className='p-[5px] font-mont bg-zinc-700 min-h-[100vh]'>
+    <div className='p-[5px] font-mont bg-zinc-600 min-h-[100vh]'>
       <Header />
       <div className="flex gap-[5px] relative">
         <div className={`absolute ${isSidebar ? "left-[0px]" : "left-[-224px]"} duration-300 w-[220px] border-[1px] border-zinc-700 shadow-sm rounded-md p-[10px] top-[5px] bottom-[0px] z-20 bg-neutral-800  md:relative md:top-[5px] md:bottom-0 md:mb-[5px] md:left-0`}>
@@ -41,7 +50,7 @@ const App = () => {
           </button>
         </div>
         <Content>
-          {catLoading && brandLoading && modelLoading?
+          {catLoading && brandLoading && modelLoading && cityLoading && locationLoading && carLoading?
             <div className='min-h-[calc(100vh-150px)] flex justify-center items-center flex-col'>
               <div className='max-w-[100px] flex justify-center items-center flex-col'>
                 <Player
@@ -53,7 +62,7 @@ const App = () => {
               </div>
             </div>
             :
-            catError || brandError || modelError?
+            catError || brandError || modelError || cityError || locationError || carError?
               <div className='flex justify-center items-center flex-col min-h-[calc(100vh-100px)]'>
                 <div className='max-w-[200px] opacity-50'>
                   <Player

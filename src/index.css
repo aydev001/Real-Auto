@@ -49,3 +49,67 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+table.table-data {
+  @apply w-full rounded-sm overflow-hidden text-[12px] md:text-[14px]
+}
+
+table.table-data thead{
+  @apply border-[1px] border-gray-600 border-opacity-40
+}
+
+table.table-data thead tr{
+  @apply bg-zinc-900 text-gray-200
+}
+
+table.table-data thead tr th{
+  @apply py-1 px-2 border-r border-gray-600 border-opacity-40
+}
+
+table.table-data tbody{
+  @apply border-[1px] border-gray-600 border-opacity-40
+}
+
+table.table-data tbody tr{
+  @apply border-t border-gray-600 border-opacity-40 duration-100 bg-neutral-900 bg-opacity-50 hover:bg-neutral-800 cursor-pointer
+}
+
+table.table-data tbody tr td{
+  @apply py-2 px-2 font-medium border-r border-gray-600 border-opacity-40
+}
+
+table.table-data tbody tr td div button.btn-update{
+  @apply py-[6px] px-[10px] border-[1px] border-blue-500 text-[14px] rounded-sm bg-opacity-0 hover:bg-opacity-20 duration-100 bg-blue-600 text-blue-500 active:scale-95 active:bg-opacity-0 hover:bg-blue-800 flex-1 flex justify-center items-center
+}
+
+table.table-data tbody tr td div button.btn-delete{
+  @apply py-[6px] px-[10px] border-[1px] border-red-500 text-[14px] rounded-sm bg-opacity-0 hover:bg-opacity-20 duration-100 bg-red-600 text-red-500 active:scale-95 active:bg-opacity-0 hover:bg-red-800 flex-1 flex justify-center items-center
+}
+
+table.table-data tbody tr td img.table-image {
+  @apply w-full h-[50px] rounded-sm object-cover border-[1px] border-zinc-800
+}
+
+form.form-data {
+  @apply flex flex-col gap-[4px]
+}
+
+form.form-data input {
+  @apply outline-none w-full bg-zinc-800 border-neutral-600 text-white border-[2px] text-[14px] font-medium duration-100 placeholder:text-[14px] hover:border-gray-500 focus:border-orange-500 rounded-md px-[10px] py-[5px]
+}
+
+form.form-data label {
+  @apply text-[14px] font-medium text-neutral-200
+}
+
+form.form-data button.btn-form {
+  @apply flex justify-center items-center gap-1 bg-orange-600 w-full hover:bg-orange-700 active:scale-95 duration-150 text-white font-medium px-[10px] py-[5px] rounded-sm
+}
+
+form.form-data .upload-input {
+  @apply border-[2px] text-[14px] flex justify-start bg-zinc-800 items-center border-neutral-600 gap-1 font-medium duration-100 hover:border-gray-500 group-focus:border-orange-500 rounded-md overflow-hidden
+}
+
+form.form-data .upload-input .btn-upload {
+  @apply px-[10px] min-w-max py-[4px] bg-neutral-900 bg-opacity-50 text-orange-100 duration-75 text-[14px] font-medium flex justify-center items-center cursor-pointer hover:bg-opacity-100 active:scale-95
+}
