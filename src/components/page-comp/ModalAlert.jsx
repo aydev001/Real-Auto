@@ -5,6 +5,17 @@ import { closeModalAlert } from '../../store/actionSlice/actionSlice'
 import { motion } from 'motion/react'
 import Login from '../modal-cont/Login'
 import CreateCategory from '../modal-cont/category-modal/CreateCategory'
+import UpdateCategory from '../modal-cont/category-modal/UpdateCategory'
+import DeleteCategory from '../modal-cont/category-modal/DeleteCategory'
+import CreateBrand from '../modal-cont/brand-modal/CreateBrand'
+import UpdateBrand from '../modal-cont/brand-modal/UpdateBrand'
+import DeleteBrand from '../modal-cont/brand-modal/DeleteBrand'
+import CreateModel from '../modal-cont/model-modal/CreateModel'
+import UpdateModel from '../modal-cont/model-modal/UpdateModel'
+import DeleteModel from '../modal-cont/model-modal/DeleteModel'
+import CreateCity from '../modal-cont/city-modal/CreateCity'
+import UpdateCity from '../modal-cont/city-modal/UpdateCity'
+import DeleteCity from '../modal-cont/city-modal/DeleteCity'
 
 const ModalAlert = () => {
     const { modalContent, isModalAlert } = useSelector(state => state.actions)
@@ -20,10 +31,43 @@ const ModalAlert = () => {
                 <div className='flex justify-between items-center'>
                     <div className='text-[16px] font-semibold'>
                         {
-                            modalContent === "login" && "Login"
+                            modalContent === "create-category" && "Create category"
                         }
                         {
-                            modalContent === "create-category" && "Create category"
+                            modalContent === "update-category" && "Update category"
+                        }
+                        {
+                            modalContent === "delete-category" && "Delete category"
+                        }
+
+                        {
+                            modalContent === "create-brand" && "Create brand"
+                        }
+                        {
+                            modalContent === "update-brand" && "Update brand"
+                        }
+                        {
+                            modalContent === "delete-brand" && "Delete brand"
+                        }
+
+                        {
+                            modalContent === "create-model" && "Create model"
+                        }
+                        {
+                            modalContent === "update-model" && "Update model"
+                        }
+                        {
+                            modalContent === "delete-model" && "Delete model"
+                        }
+
+                        {
+                            modalContent === "create-city" && "Create city"
+                        }
+                        {
+                            modalContent === "update-city" && "Update city"
+                        }
+                        {
+                            modalContent === "delete-city" && "Delete city"
                         }
                     </div>
                     <button onClick={() => dispatch(closeModalAlert())} className=" hover:bg-neutral-700 active:scale-95 bg-neutral-800 text-gray-100 w-[25px] h-[25px] text-[18px] rounded-sm flex justify-center items-center">
@@ -33,10 +77,43 @@ const ModalAlert = () => {
                 <hr className='my-[5px]' />
                 <div>
                     {
-                        modalContent === "login" && <Login />
+                        modalContent === "create-category" && <CreateCategory />
                     }
                     {
-                        modalContent === "create-category" && <CreateCategory/>
+                        modalContent === "update-category" && <UpdateCategory />
+                    }
+                    {
+                        modalContent === "delete-category" && <DeleteCategory />
+                    }
+
+                    {
+                        modalContent === "create-brand" && <CreateBrand />
+                    }
+                    {
+                        modalContent === "update-brand" && <UpdateBrand />
+                    }
+                    {
+                        modalContent === "delete-brand" && <DeleteBrand />
+                    }
+
+                    {
+                        modalContent === "create-model" && <CreateModel />
+                    }
+                    {
+                        modalContent === "update-model" && <UpdateModel />
+                    }
+                    {
+                        modalContent === "delete-model" && <DeleteModel />
+                    }
+
+                    {
+                        modalContent === "create-city" && <CreateCity/>
+                    }
+                    {
+                        modalContent === "update-city" && <UpdateCity/>
+                    }
+                    {
+                        modalContent === "delete-city" && <DeleteCity/>
                     }
                 </div>
             </motion.div>

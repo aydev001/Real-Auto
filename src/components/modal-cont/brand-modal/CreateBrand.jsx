@@ -4,19 +4,18 @@ import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { errorToast, succsessToast } from "../../../services/toastService";
-import { fetchCategories } from "../../../store/categorySlice/categorySlice";
 import { closeModalAlert } from "../../../store/actionSlice/actionSlice";
 import axiosInstance from "../../../api/axiosInstance";
 import sending from "../../../assets/sending.json"
 import { Player } from "@lottiefiles/react-lottie-player";
+import { fetchBrands } from "../../../store/brandSlice/brandSlice";
 
-const CreateCategory = () => {
+const CreateBrand = () => {
     const dispatch = useDispatch();
     const [preview, setPreview] = useState(null); // Rasmni oldindan ko‘rsatish uchun state
     const [imageName, setImageName] = useState("Image not uploaded")
     const validationSchema = Yup.object({
-        name_ru: Yup.string().required("Name-Ru is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
-        name_en: Yup.string().required("Name-En is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
+        title: Yup.string().required("Title is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
         images: Yup.mixed().required("Image is required") // `mixed()` ishlatish kerak
     });
 
@@ -33,7 +32,7 @@ const CreateCategory = () => {
                     )}
             </div>
             <Formik
-                initialValues={{ name_ru: "", name_en: "", images: null }}
+                initialValues={{ title: "", images: null }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                     try {
@@ -41,22 +40,21 @@ const CreateCategory = () => {
 
                         // FormData yaratish (Fayl yuklash uchun)
                         const formData = new FormData();
-                        formData.append("name_ru", values.name_ru);
-                        formData.append("name_en", values.name_en);
+                        formData.append("title", values.title);
                         formData.append("images", values.images);
 
                         // API-ga yuborish
-                        await axiosInstance.post(`/categories`, formData)
+                        await axiosInstance.post(`/brands`, formData)
                         setSubmitting(false);
                         resetForm();
-                        dispatch(fetchCategories());
+                        dispatch(fetchBrands());
                         setPreview(null); // Rasmni tozalash
                         dispatch(closeModalAlert())
-                        succsessToast(`Category created successfully`);
+                        succsessToast(`Brand created successfully`);
                     } catch (error) {
                         console.log(error);
                         setSubmitting(false);
-                        errorToast("Category created error");
+                        errorToast("Brand created error");
 
                     }
                 }}
@@ -128,37 +126,19 @@ const CreateCategory = () => {
 
                         {/* NAME INPUT */}
                         <div className="flex flex-col">
-                            <label className="text-[14px] font-semibold" htmlFor="name-ru">Name-Ru</label>
+                            <label className="text-[14px] font-semibold" htmlFor="title">Title</label>
                             <input
-                                name="name_ru"
+                                name="title"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.name_ru}
+                                value={values.title}
                                 type="text"
-                                id="name-ru"
-                                placeholder="Enter the name-ru"
+                                id="title"
+                                placeholder="Enter the title"
                                 autoComplete="name"
                             />
                             <div className="min-h-[10px] leading-[12px]">
-                                {errors.name_ru && touched.name_ru && <span className="text-[12px] text-orange-600 font-medium">{errors.name_ru}</span>}
-                            </div>
-                        </div>
-
-                        {/* NAME INPUT */}
-                        <div className="flex flex-col">
-                            <label htmlFor="name-en">Name-En</label>
-                            <input
-                                name="name_en"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.name_en}
-                                type="text"
-                                id="name-en"
-                                placeholder="Enter the name-en"
-                                autoComplete="name"
-                            />
-                            <div className="min-h-[10px] leading-[12px]">
-                                {errors.name_en && touched.name_en && <span className="text-[12px] text-orange-600 font-medium">{errors.name_en}</span>}
+                                {errors.title && touched.title && <span className="text-[12px] text-orange-600 font-medium">{errors.title}</span>}
                             </div>
                         </div>
 
@@ -189,4 +169,4 @@ const CreateCategory = () => {
     );
 };
 
-export default CreateCategory;
+export default CreateBrand;

@@ -1,16 +1,29 @@
 import { AiFillEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'motion/react'
 import { useLocation } from "react-router";
 import { btnData } from "../services/const";
+import { openModalAlert, setSelectItemId } from "../store/actionSlice/actionSlice";
 
 const Brands = () => {
   const { brands } = useSelector(state => state.brands)
   console.log(brands)
   const { pathname } = useLocation()
   const selectBtnData = btnData.find(item => item.path === pathname)
+  
+  const dispatch = useDispatch()
+  const handleUpdate = useCallback((id) => {
+    dispatch(setSelectItemId(id))
+    dispatch(openModalAlert("update-brand"))
+  }, [])
+
+  const handleDelete = useCallback((id) => {
+    dispatch(setSelectItemId(id))
+    dispatch(openModalAlert("delete-brand"))
+  }, [])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -26,7 +39,7 @@ const Brands = () => {
           <h4 className="font-medium">{selectBtnData.title}</h4>
         </div>
         <div>
-          <button className="px-[10px] py-[4px] border-[1px] rounded-sm duration-100 bg-orange-600 border-orange-600 border-opacity-20 font-semibold text-[14px] hover:bg-orange-500 active:scale-95 active:bg-orange-600">
+          <button onClick={() => dispatch(openModalAlert("create-brand"))} className="px-[10px] py-[4px] border-[1px] rounded-sm duration-100 bg-orange-600 border-orange-600 border-opacity-20 font-semibold text-[14px] hover:bg-orange-500 active:scale-95 active:bg-orange-600">
             + Add brand
           </button>
         </div>
@@ -61,10 +74,10 @@ const Brands = () => {
               </td>
               <td className="text-center">
                 <div className="w-full flex justify-between items-center gap-2">
-                  <button className="btn-update">
+                  <button onClick={() => handleUpdate(brand?.id)} className="btn-update">
                     <AiFillEdit />
                   </button>
-                  <button className="btn-delete">
+                  <button onClick={() => handleDelete(brand?.id)} className="btn-delete">
                     <FaTrash />
                   </button>
                 </div>

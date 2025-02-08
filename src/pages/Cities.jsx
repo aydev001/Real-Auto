@@ -1,16 +1,28 @@
 import { AiFillEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'motion/react'
 import { useLocation } from "react-router";
 import { btnData } from "../services/const";
+import { openModalAlert, setSelectItemId } from "../store/actionSlice/actionSlice";
 
 const Cities = () => {
   const { cities } = useSelector(state => state.cities)
   console.log(cities)
   const { pathname } = useLocation()
   const selectBtnData = btnData.find(item => item.path === pathname)
+
+  const dispatch = useDispatch()
+  const handleUpdate = useCallback((id) => {
+    dispatch(setSelectItemId(id))
+    dispatch(openModalAlert("update-city"))
+  }, [])
+
+  const handleDelete = useCallback((id) => {
+    dispatch(setSelectItemId(id))
+    dispatch(openModalAlert("delete-city"))
+  }, [])
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -26,7 +38,7 @@ const Cities = () => {
           <h4 className="font-medium">{selectBtnData.title}</h4>
         </div>
         <div>
-          <button className="px-[10px] py-[4px] border-[1px] rounded-sm duration-100 bg-orange-600 border-orange-600 border-opacity-20 font-semibold text-[14px] hover:bg-orange-500 active:scale-95 active:bg-orange-600">
+          <button onClick={() => dispatch(openModalAlert("create-city"))} className="px-[10px] py-[4px] border-[1px] rounded-sm duration-100 bg-orange-600 border-orange-600 border-opacity-20 font-semibold text-[14px] hover:bg-orange-500 active:scale-95 active:bg-orange-600">
             + Add city
           </button>
         </div>
@@ -40,7 +52,7 @@ const Cities = () => {
               Name
             </th>
             <th className="text-center">
-              Description
+              Text
             </th>
             <th className="text-center w-[150px]">
               Image
@@ -67,10 +79,10 @@ const Cities = () => {
               </td>
               <td className="text-center">
                 <div className="w-full flex justify-between items-center gap-2">
-                  <button className="btn-update">
+                  <button onClick={() => handleUpdate(city?.id)} className="btn-update">
                     <AiFillEdit />
                   </button>
-                  <button className="btn-delete">
+                  <button onClick={() => handleDelete(city?.id)} className="btn-delete">
                     <FaTrash />
                   </button>
                 </div>

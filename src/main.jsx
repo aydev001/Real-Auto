@@ -12,6 +12,7 @@ import Models from './pages/Models.jsx';
 import Cities from './pages/Cities.jsx';
 import Locations from './pages/Locations.jsx';
 import Cars from './pages/Cars.jsx';
+import Profile from './pages/Profile.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/cities' element={<Cities/>} />
             <Route path='/locations' element={<Locations/>} />
             <Route path='/cars' element={<Cars/>} />
+            <Route path='/profile' element={<Profile/>} />
             <Route path='*' element={<NotFount />} />
           </Route>
         </Routes>

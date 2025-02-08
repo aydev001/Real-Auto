@@ -1,8 +1,5 @@
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
-import { BsPersonSquare } from "react-icons/bs";
 import { CgLogIn } from "react-icons/cg";
-import { BsPersonCircle } from "react-icons/bs";
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from "motion/react";
 import { useDispatch } from "react-redux";
@@ -14,7 +11,7 @@ const ProfileButton = ({ userData }) => {
     const [isActive, setIsActive] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    
+
     const handleClickOutside = (event) => {
         if (!event.target.closest(".menu")) {
             setIsActive(false); // Menyu tashqarisiga bosilganda yopish
@@ -45,7 +42,7 @@ const ProfileButton = ({ userData }) => {
                     <FaUserCircle />
                 </span>
                 <span>
-                    {userData.isAdmin ? "Admin" : "Profile"}
+                    Admin
                 </span>
             </button>
             {
@@ -55,35 +52,20 @@ const ProfileButton = ({ userData }) => {
                     whileInView={{ opacity: [0, 1], scale: 1 }}
                     viewport={{ once: false, amount: 0.1 }}
                     transition={{ duration: 0.2, ease: "easeInOut", delay: 0.1 }}
-                    className="absolute menu flex flex-col gap-1 bg-white p-[7px] text-gray-600 rounded-sm border-[1px] top-[40px] shadow-md z-[5] min-w-[150px] right-[-12px]">
+                    className="absolute menu flex flex-col gap-1 bg-neutral-700 text-gray-100 p-[7px] rounded-sm border-[1px] border-neutral-600 top-[40px] shadow-md z-[5] min-w-[150px] right-[-12px]">
                     <button onClick={() => {
                         setIsActive(false)
                         navigate("/profile")
-                    }} className="text-[14px] font-medium flex p-[5px] rounded-sm hover:bg-slate-100 justify-start items-center gap-1 active:scale-95">
+                    }} className="text-[14px] font-medium flex p-[5px] rounded-sm hover:bg-neutral-800 justify-start items-center gap-1 active:scale-95">
                         <span>
-                            <BsPersonCircle />
+                            <FaUserCircle />
                         </span>
                         <span className="min-w-max">
-                            {truncateText(userData.userName, 12)}
+                            Profile
                         </span>
                     </button>
-                    {
-                        userData.isAdmin &&
-                        <div>
-                            <hr className="mb-[3px]" />
-                            <button onClick={() => {
-                                setIsActive(false)
-                                navigate("/admin")
-                            }} className="flex justify-start hover:bg-slate-100 p-[5px] rounded-sm items-center gap-1 text-blue-600 w-full hover:text-blue-700 active:scale-95">
-                                <MdOutlineAdminPanelSettings />
-                                <span className="text-[14px] font-medium">
-                                    Dashboard
-                                </span>
-                            </button>
-                        </div>
-                    }
                     <hr />
-                    <button onClick={() => logoutProfile()} className="flex justify-start hover:bg-slate-100 p-[5px] rounded-sm items-center gap-1 text-red-500 w-full hover:text-red-600 active:scale-95">
+                    <button onClick={() => logoutProfile()} className="flex justify-start hover:bg-neutral-800 p-[5px] rounded-sm items-center gap-1 text-orange-500 w-full hover:text-orange-600 active:scale-95">
                         <CgLogIn />
                         <span className="text-[14px] font-medium">
                             Logout

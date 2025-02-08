@@ -1,11 +1,11 @@
 import { AiFillEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'motion/react'
 import { useLocation } from "react-router";
 import { btnData } from "../services/const";
-import { openModalAlert } from "../store/actionSlice/actionSlice";
+import { openModalAlert, setSelectItemId } from "../store/actionSlice/actionSlice";
 
 const Categories = () => {
   const { categories } = useSelector(state => state.categories)
@@ -13,6 +13,17 @@ const Categories = () => {
   console.log(categories)
   const { pathname } = useLocation()
   const selectBtnData = btnData.find(item => item.path === pathname)
+
+  const handleUpdate = useCallback((id) => {
+    dispatch(setSelectItemId(id))
+    dispatch(openModalAlert("update-category"))
+  }, [])
+
+  const handleDelete = useCallback((id) => {
+    dispatch(setSelectItemId(id))
+    dispatch(openModalAlert("delete-category"))
+  }, [])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -69,10 +80,10 @@ const Categories = () => {
               </td>
               <td className="text-center">
                 <div className="w-full flex justify-between items-center gap-2">
-                  <button className="btn-update">
+                  <button onClick={() => handleUpdate(category?.id)} className="btn-update">
                     <AiFillEdit />
                   </button>
-                  <button className="btn-delete">
+                  <button onClick={() => handleDelete(category?.id)} className="btn-delete">
                     <FaTrash />
                   </button>
                 </div>

@@ -4,19 +4,19 @@ import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { errorToast, succsessToast } from "../../../services/toastService";
-import { fetchCategories } from "../../../store/categorySlice/categorySlice";
 import { closeModalAlert } from "../../../store/actionSlice/actionSlice";
 import axiosInstance from "../../../api/axiosInstance";
 import sending from "../../../assets/sending.json"
 import { Player } from "@lottiefiles/react-lottie-player";
+import { fetchCities } from "../../../store/citiySlice/citySlice";
 
-const CreateCategory = () => {
+const CreateCity = () => {
     const dispatch = useDispatch();
     const [preview, setPreview] = useState(null); // Rasmni oldindan ko‘rsatish uchun state
     const [imageName, setImageName] = useState("Image not uploaded")
     const validationSchema = Yup.object({
-        name_ru: Yup.string().required("Name-Ru is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
-        name_en: Yup.string().required("Name-En is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
+        name: Yup.string().required("Name is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
+        text: Yup.string().required("Text is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
         images: Yup.mixed().required("Image is required") // `mixed()` ishlatish kerak
     });
 
@@ -33,7 +33,7 @@ const CreateCategory = () => {
                     )}
             </div>
             <Formik
-                initialValues={{ name_ru: "", name_en: "", images: null }}
+                initialValues={{ name: "", text: "", images: null }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                     try {
@@ -41,22 +41,22 @@ const CreateCategory = () => {
 
                         // FormData yaratish (Fayl yuklash uchun)
                         const formData = new FormData();
-                        formData.append("name_ru", values.name_ru);
-                        formData.append("name_en", values.name_en);
+                        formData.append("name", values.name);
+                        formData.append("text", values.text);
                         formData.append("images", values.images);
 
                         // API-ga yuborish
-                        await axiosInstance.post(`/categories`, formData)
+                        await axiosInstance.post(`/cities`, formData)
                         setSubmitting(false);
                         resetForm();
-                        dispatch(fetchCategories());
+                        dispatch(fetchCities());
                         setPreview(null); // Rasmni tozalash
                         dispatch(closeModalAlert())
-                        succsessToast(`Category created successfully`);
+                        succsessToast(`City created successfully`);
                     } catch (error) {
                         console.log(error);
                         setSubmitting(false);
-                        errorToast("Category created error");
+                        errorToast("City created error");
 
                     }
                 }}
@@ -128,37 +128,37 @@ const CreateCategory = () => {
 
                         {/* NAME INPUT */}
                         <div className="flex flex-col">
-                            <label className="text-[14px] font-semibold" htmlFor="name-ru">Name-Ru</label>
+                            <label className="text-[14px] font-semibold" htmlFor="name">Name</label>
                             <input
-                                name="name_ru"
+                                name="name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.name_ru}
+                                value={values.name}
                                 type="text"
-                                id="name-ru"
-                                placeholder="Enter the name-ru"
+                                id="name"
+                                placeholder="Enter the name"
                                 autoComplete="name"
                             />
                             <div className="min-h-[10px] leading-[12px]">
-                                {errors.name_ru && touched.name_ru && <span className="text-[12px] text-orange-600 font-medium">{errors.name_ru}</span>}
+                                {errors.name && touched.name && <span className="text-[12px] text-orange-600 font-medium">{errors.name}</span>}
                             </div>
                         </div>
 
-                        {/* NAME INPUT */}
+                        {/* TEXT INPUT */}
                         <div className="flex flex-col">
-                            <label htmlFor="name-en">Name-En</label>
+                            <label className="text-[14px] font-semibold" htmlFor="text">Text</label>
                             <input
-                                name="name_en"
+                                name="text"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.name_en}
+                                value={values.text}
                                 type="text"
-                                id="name-en"
-                                placeholder="Enter the name-en"
-                                autoComplete="name"
+                                id="text"
+                                placeholder="Enter the text"
+                                autoComplete="text"
                             />
                             <div className="min-h-[10px] leading-[12px]">
-                                {errors.name_en && touched.name_en && <span className="text-[12px] text-orange-600 font-medium">{errors.name_en}</span>}
+                                {errors.text && touched.text && <span className="text-[12px] text-orange-600 font-medium">{errors.text}</span>}
                             </div>
                         </div>
 
@@ -189,4 +189,4 @@ const CreateCategory = () => {
     );
 };
 
-export default CreateCategory;
+export default CreateCity;

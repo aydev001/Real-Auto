@@ -2,13 +2,14 @@ import { RxEyeOpen } from "react-icons/rx";
 import { RxEyeClosed } from "react-icons/rx";
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { closeModalAlert, openModalAlert } from '../../store/actionSlice/actionSlice'
 import { Formik } from 'formik';
 import * as Yup from "yup"
-import { errorToast, succsessToast } from "../../services/toastService";
+import { errorToast} from "../../services/toastService";
 import axios from "axios";
-import { fetchUserOrders, fetchUserProfile } from "../../store/userSlice/userSlice";
 import { useMask } from "@react-input/mask";
+import { fetchUserProfile } from "../../store/userSlice/userSlice";
+import sending from "../../assets/sending.json"
+import { Player } from "@lottiefiles/react-lottie-player";
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -35,17 +36,18 @@ const Login = () => {
                 initialValues={{ phone_number: "", password: "" }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
+                    const bodyData = { ...values, phone_number: values.phone_number.replace(/\D/g, "").slice(3) }
+                    const formData = new FormData()
+                    formData.append("phone_number", bodyData.phone_number)
+                    formData.append("password", bodyData.password)
                     const baseURL = process.env.VITE_BASE_URL
                     try {
                         setSubmitting(true)
-                        // const res = await axios.post(`${baseURL}/users/login`, values)
-                        // localStorage.setItem("authToken", res.data.token)
+                        const res = await axios.post(`${baseURL}/auth/signin`, formData)
+                        localStorage.setItem("authToken", res.data?.data?.tokens?.accessToken?.token)
+                        dispatch(fetchUserProfile())
                         setSubmitting(false)
                         resetForm()
-                        dispatch(closeModalAlert())
-                        dispatch(fetchUserProfile())
-                        dispatch(fetchUserOrders())
-                        succsessToast("You have successfully logged in")
                     } catch (error) {
                         console.log(error)
                         setSubmitting(false)
@@ -105,9 +107,17 @@ const Login = () => {
                         </div>
                         <hr className="mb-[5px]" />
                         <button type='submit' disabled={isSubmitting} className={`${isSubmitting ? "cursor-wait" : "cursor-pointer"} btn-form`}>
-                            <span>
-                                {isSubmitting ? "Login..." : "Login"}
-                            </span>
+                            {isSubmitting ?
+                                <span className="inline-block max-h-[32px] max-w-[50px]">
+                                    <Player
+                                        src={sending}
+                                        loop
+                                        autoplay
+                                    />
+                                </span> :
+                                <span>
+                                    Login
+                                </span>}
                         </button>
                     </form>
                 )}

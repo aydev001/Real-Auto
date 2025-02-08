@@ -1,23 +1,28 @@
 import { BiImage } from "react-icons/bi";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { errorToast, succsessToast } from "../../../services/toastService";
-import { fetchCategories } from "../../../store/categorySlice/categorySlice";
 import { closeModalAlert } from "../../../store/actionSlice/actionSlice";
 import axiosInstance from "../../../api/axiosInstance";
 import sending from "../../../assets/sending.json"
 import { Player } from "@lottiefiles/react-lottie-player";
+import { fetchBrands } from "../../../store/brandSlice/brandSlice";
 
-const CreateCategory = () => {
+const UpdateBrand = () => {
     const dispatch = useDispatch();
-    const [preview, setPreview] = useState(null); // Rasmni oldindan ko‘rsatish uchun state
-    const [imageName, setImageName] = useState("Image not uploaded")
+    const { selectItemId } = useSelector(state => state.actions)
+    const { brands } = useSelector(state => state.brands)
+
+    const selectCategory = brands.find(item => item.id === selectItemId)
+
+    const [preview, setPreview] = useState(`https://realauto.limsa.uz/api/uploads/images/${selectCategory?.image_src}`); // Rasmni oldindan ko‘rsatish uchun state
+    const [imageName, setImageName] = useState(selectCategory?.image_src)
+
     const validationSchema = Yup.object({
-        name_ru: Yup.string().required("Name-Ru is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
-        name_en: Yup.string().required("Name-En is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
-        images: Yup.mixed().required("Image is required") // `mixed()` ishlatish kerak
+        title: Yup.string().required("Title is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
+        images: Yup.mixed() // `mixed()` ishlatish kerak
     });
 
     return (
@@ -33,7 +38,7 @@ const CreateCategory = () => {
                     )}
             </div>
             <Formik
-                initialValues={{ name_ru: "", name_en: "", images: null }}
+                initialValues={{ title: selectCategory.title,  images: "" }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                     try {
@@ -41,23 +46,23 @@ const CreateCategory = () => {
 
                         // FormData yaratish (Fayl yuklash uchun)
                         const formData = new FormData();
-                        formData.append("name_ru", values.name_ru);
-                        formData.append("name_en", values.name_en);
-                        formData.append("images", values.images);
+                        formData.append("title", values.title);
+                        if (values.images) {
+                            formData.append("images", values.images);
+                        }
 
                         // API-ga yuborish
-                        await axiosInstance.post(`/categories`, formData)
+                        await axiosInstance.put(`/brands/${selectItemId}`, formData)
                         setSubmitting(false);
                         resetForm();
-                        dispatch(fetchCategories());
+                        dispatch(fetchBrands());
                         setPreview(null); // Rasmni tozalash
                         dispatch(closeModalAlert())
-                        succsessToast(`Category created successfully`);
+                        succsessToast(`Brand updated successfully`);
                     } catch (error) {
                         console.log(error);
                         setSubmitting(false);
-                        errorToast("Category created error");
-
+                        errorToast("Brand updated error");
                     }
                 }}
             >
@@ -128,37 +133,19 @@ const CreateCategory = () => {
 
                         {/* NAME INPUT */}
                         <div className="flex flex-col">
-                            <label className="text-[14px] font-semibold" htmlFor="name-ru">Name-Ru</label>
+                            <label className="text-[14px] font-semibold" htmlFor="title">Title</label>
                             <input
-                                name="name_ru"
+                                name="title"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.name_ru}
+                                value={values.title}
                                 type="text"
-                                id="name-ru"
-                                placeholder="Enter the name-ru"
+                                id="title"
+                                placeholder="Enter the title"
                                 autoComplete="name"
                             />
                             <div className="min-h-[10px] leading-[12px]">
-                                {errors.name_ru && touched.name_ru && <span className="text-[12px] text-orange-600 font-medium">{errors.name_ru}</span>}
-                            </div>
-                        </div>
-
-                        {/* NAME INPUT */}
-                        <div className="flex flex-col">
-                            <label htmlFor="name-en">Name-En</label>
-                            <input
-                                name="name_en"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.name_en}
-                                type="text"
-                                id="name-en"
-                                placeholder="Enter the name-en"
-                                autoComplete="name"
-                            />
-                            <div className="min-h-[10px] leading-[12px]">
-                                {errors.name_en && touched.name_en && <span className="text-[12px] text-orange-600 font-medium">{errors.name_en}</span>}
+                                {errors.title && touched.title && <span className="text-[12px] text-orange-600 font-medium">{errors.title}</span>}
                             </div>
                         </div>
 
@@ -178,7 +165,7 @@ const CreateCategory = () => {
                                         />
                                     </span> :
                                     <span>
-                                        Create
+                                        Save
                                     </span>}
                             </button>
                         </div>
@@ -189,4 +176,4 @@ const CreateCategory = () => {
     );
 };
 
-export default CreateCategory;
+export default UpdateBrand;

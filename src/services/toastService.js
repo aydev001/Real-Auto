@@ -8,7 +8,7 @@ export const succsessToast = (title) => {
         closeOnClick: false,
         pauseOnHover: true,
         draggable: true,
-        theme: "colored",
+        theme: "dark",
         transition: Bounce,
     });
 }
@@ -21,7 +21,7 @@ export const errorToast = (title) => {
         closeOnClick: false,
         pauseOnHover: true,
         draggable: true,
-        theme: "colored",
+        theme: "dark",
         transition: Bounce,
     });
 }
@@ -34,7 +34,7 @@ export const infoToast = (title) => {
         closeOnClick: false,
         pauseOnHover: true,
         draggable: true,
-        theme: "colored",
+        theme: "dark",
         transition: Bounce,
     });
 }

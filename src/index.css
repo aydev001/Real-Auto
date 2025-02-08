@@ -24,18 +24,19 @@ hr {
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #959595;
+    border-radius: 3px;
   }
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #c6c6c6;
-    border-radius: 5px;
+    background: #5d5d5d;
+    border-radius: 3px;
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #929292;
+    background: #ff7700;
   }
 
   /* Chrome, Safari, Edge, Opera */
@@ -95,6 +96,10 @@ form.form-data {
 }
 
 form.form-data input {
+  @apply outline-none w-full bg-zinc-800 border-neutral-600 text-white border-[2px] text-[14px] font-medium duration-100 placeholder:text-[14px] hover:border-gray-500 focus:border-orange-500 rounded-md px-[10px] py-[5px]
+}
+
+form.form-data select {
   @apply outline-none w-full bg-zinc-800 border-neutral-600 text-white border-[2px] text-[14px] font-medium duration-100 placeholder:text-[14px] hover:border-gray-500 focus:border-orange-500 rounded-md px-[10px] py-[5px]
 }
 

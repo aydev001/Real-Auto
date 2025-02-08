@@ -2,7 +2,7 @@ import { TbReload } from "react-icons/tb";
 import React, { useEffect } from 'react'
 import Header from './components/Header'
 import Content from './components/Content'
-import { Outlet} from 'react-router'
+import { Outlet } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCategories } from './store/categorySlice/categorySlice'
 import { Player } from '@lottiefiles/react-lottie-player'
@@ -18,6 +18,10 @@ import { fetchModels } from "./store/modelSlice/modelSlice";
 import { fetchCities } from "./store/citiySlice/citySlice";
 import { fetchLocations } from "./store/locationSlice/locationSlice";
 import { fetchCars } from "./store/carSlice/carSlice";
+import { fetchUserProfile } from "./store/userSlice/userSlice";
+import Login from "./components/modal-cont/Login";
+import logo from "./assets/logo.png"
+import { succsessToast } from "./services/toastService";
 
 const App = () => {
   const dispatch = useDispatch()
@@ -28,8 +32,10 @@ const App = () => {
   const { loading: locationLoading, error: locationError } = useSelector(state => state.locations)
   const { loading: carLoading, error: carError } = useSelector(state => state.cars)
   const { isSidebar } = useSelector(state => state.actions)
+  const { userProfile } = useSelector(state => state.users)
 
   useEffect(() => {
+    dispatch(fetchUserProfile())
     dispatch(fetchCategories())
     dispatch(fetchBrands())
     dispatch(fetchModels())
@@ -37,6 +43,30 @@ const App = () => {
     dispatch(fetchLocations())
     dispatch(fetchCars())
   }, [dispatch])
+
+  
+  if (!localStorage.getItem("authToken") || !userProfile) {
+    return (
+      <div className='p-[5px] font-mont bg-zinc-900 bg-opacity-90 min-h-[100vh] flex justify-center items-center text-gray-200'>
+        <div className="w-[500px] border-[1px] rounded-md p-[15px] border-zinc-700 bg-neutral-800">
+          <div className="font-semibold text-[18px] flex justify-between items-center">
+            <div>
+              Login to Dashboard
+            </div>
+            <div className="flex justify-center items-center">
+              <img className="p-[5px] max-h-[40px] " src={logo} alt="" />
+            </div>
+          </div>
+          <hr className="my-[10px]" />
+          <Login />
+        </div>
+        <ToastContainer />
+      </div>
+    )
+  }
+
+
+
   return (
     <div className='p-[5px] font-mont bg-zinc-600 min-h-[100vh]'>
       <Header />
@@ -50,7 +80,7 @@ const App = () => {
           </button>
         </div>
         <Content>
-          {catLoading && brandLoading && modelLoading && cityLoading && locationLoading && carLoading?
+          {catLoading && brandLoading && modelLoading && cityLoading && locationLoading && carLoading ?
             <div className='min-h-[calc(100vh-150px)] flex justify-center items-center flex-col'>
               <div className='max-w-[100px] flex justify-center items-center flex-col'>
                 <Player
@@ -62,7 +92,7 @@ const App = () => {
               </div>
             </div>
             :
-            catError || brandError || modelError || cityError || locationError || carError?
+            catError || brandError || modelError || cityError || locationError || carError ?
               <div className='flex justify-center items-center flex-col min-h-[calc(100vh-100px)]'>
                 <div className='max-w-[200px] opacity-50'>
                   <Player

@@ -3,11 +3,11 @@ import { CgSpinner } from 'react-icons/cg'
 import { FaTrash } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../../../api/axiosInstance'
-import { fetchCategories } from '../../../store/categorySlice/categorySlice'
 import { closeModalAlert } from '../../../store/actionSlice/actionSlice'
 import { errorToast, succsessToast } from '../../../services/toastService'
+import { fetchModels } from '../../../store/modelSlice/modelSlice'
 
-const DeleteCategory = () => {
+const DeleteModel = () => {
     const { selectItemId } = useSelector(state => state.actions)
     const dispatch = useDispatch()
     const [pending, setPending] = useState()
@@ -15,20 +15,20 @@ const DeleteCategory = () => {
     const handleDeleteCateg = async (id) => {
         try {
             setPending(true)
-            const res = await axiosInstance.delete(`/categories/${id}`)
+            const res = await axiosInstance.delete(`/models/${id}`)
             setPending(false)
-            dispatch(fetchCategories())
+            dispatch(fetchModels())
             dispatch(closeModalAlert())
-            succsessToast("Category was successfully deleted")
+            succsessToast("Model was successfully deleted")
         } catch (error) {
             setPending(false)
             dispatch(closeModalAlert())
-            errorToast("Category deleted error")
+            errorToast("Model deleted error")
         }
     }
     return (
         <div>
-            <p className='text-[14px] font-medium'>Are you sure you want to delete this category ?</p>
+            <p className='text-[14px] font-medium'>Are you sure you want to delete this model ?</p>
             <div className='flex justify-end gap-[5px] mt-[10px]'>
                 <button onClick={() => {
                     dispatch(closeModalAlert())
@@ -50,4 +50,4 @@ const DeleteCategory = () => {
     )
 }
 
-export default DeleteCategory
+export default DeleteModel
