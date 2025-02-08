@@ -9,7 +9,7 @@ import { openModalAlert, setSelectItemId } from "../store/actionSlice/actionSlic
 
 const Cities = () => {
   const { cities } = useSelector(state => state.cities)
-  console.log(cities)
+  
   const { pathname } = useLocation()
   const selectBtnData = btnData.find(item => item.path === pathname)
 

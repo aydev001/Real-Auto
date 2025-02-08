@@ -8,12 +8,12 @@ import { closeModalAlert } from "../../../store/actionSlice/actionSlice";
 import axiosInstance from "../../../api/axiosInstance";
 import sending from "../../../assets/sending.json"
 import { Player } from "@lottiefiles/react-lottie-player";
-import { fetchCities } from "../../../store/citiySlice/citySlice";
+import { fetchLocations } from "../../../store/locationSlice/locationSlice";
 
-const UpdateCity = () => {
+const UpdateLocation = () => {
     const { selectItemId } = useSelector(state => state.actions)
-    const { cities } = useSelector(state => state.cities)
-    const selectCity = cities.find(item => item.id === selectItemId)
+    const { locations } = useSelector(state => state.locations)
+    const selectCity = locations.find(item => item.id === selectItemId)
 
     const dispatch = useDispatch();
     const [preview, setPreview] = useState(`https://realauto.limsa.uz/api/uploads/images/${selectCity?.image_src}`); // Rasmni oldindan ko‘rsatish uchun state
@@ -57,17 +57,17 @@ const UpdateCity = () => {
                         }
 
                         // API-ga yuborish
-                        await axiosInstance.put(`/cities/${selectItemId}`, formData)
+                        await axiosInstance.put(`/locations/${selectItemId}`, formData)
                         setSubmitting(false);
                         resetForm();
-                        dispatch(fetchCities());
+                        dispatch(fetchLocations());
                         setPreview(null); // Rasmni tozalash
                         dispatch(closeModalAlert())
-                        succsessToast(`City updated successfully`);
+                        succsessToast(`Location updated successfully`);
                     } catch (error) {
                         console.log(error);
                         setSubmitting(false);
-                        errorToast("City updated error");
+                        errorToast("Location updated error");
 
                     }
                 }}
@@ -200,4 +200,4 @@ const UpdateCity = () => {
     );
 };
 
-export default UpdateCity;
+export default UpdateLocation;

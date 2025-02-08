@@ -149,7 +149,7 @@ const UpdateModel = () => {
                                         />
                                     </span> :
                                     <span>
-                                        Create
+                                        Save
                                     </span>}
                             </button>
                         </div>

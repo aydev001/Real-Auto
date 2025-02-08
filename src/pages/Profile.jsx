@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 
 const Profile = () => {
     const { userProfile } = useSelector(state => state.users)
-    console.log(userProfile)
+    
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}

@@ -1,6 +1,6 @@
 import { BiImage } from "react-icons/bi";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { errorToast, succsessToast } from "../../../services/toastService";
@@ -8,25 +8,16 @@ import { closeModalAlert } from "../../../store/actionSlice/actionSlice";
 import axiosInstance from "../../../api/axiosInstance";
 import sending from "../../../assets/sending.json"
 import { Player } from "@lottiefiles/react-lottie-player";
-import { fetchCities } from "../../../store/citiySlice/citySlice";
+import { fetchLocations } from "../../../store/locationSlice/locationSlice";
 
-const UpdateCity = () => {
-    const { selectItemId } = useSelector(state => state.actions)
-    const { cities } = useSelector(state => state.cities)
-    const selectCity = cities.find(item => item.id === selectItemId)
-
+const CreateLocation = () => {
     const dispatch = useDispatch();
-    const [preview, setPreview] = useState(`https://realauto.limsa.uz/api/uploads/images/${selectCity?.image_src}`); // Rasmni oldindan ko‘rsatish uchun state
-    const [imageName, setImageName] = useState(selectCity?.image_src)
-
-
-
-
-
+    const [preview, setPreview] = useState(null); // Rasmni oldindan ko‘rsatish uchun state
+    const [imageName, setImageName] = useState("Image not uploaded")
     const validationSchema = Yup.object({
         name: Yup.string().required("Name is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
         text: Yup.string().required("Text is required").min(3, "Minimum 3 characters").max(30, "Maximum 30 characters"),
-        images: Yup.mixed() // `mixed()` ishlatish kerak
+        images: Yup.mixed().required("Image is required") // `mixed()` ishlatish kerak
     });
 
     return (
@@ -42,7 +33,7 @@ const UpdateCity = () => {
                     )}
             </div>
             <Formik
-                initialValues={{ name: selectCity.name, text: selectCity.text, images: "" }}
+                initialValues={{ name: "", text: "", images: null }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                     try {
@@ -52,22 +43,20 @@ const UpdateCity = () => {
                         const formData = new FormData();
                         formData.append("name", values.name);
                         formData.append("text", values.text);
-                        if (values.images) {
-                            formData.append("images", values.images);
-                        }
+                        formData.append("images", values.images);
 
                         // API-ga yuborish
-                        await axiosInstance.put(`/cities/${selectItemId}`, formData)
+                        await axiosInstance.post(`/locations`, formData)
                         setSubmitting(false);
                         resetForm();
-                        dispatch(fetchCities());
+                        dispatch(fetchLocations());
                         setPreview(null); // Rasmni tozalash
                         dispatch(closeModalAlert())
-                        succsessToast(`City updated successfully`);
+                        succsessToast(`Location created successfully`);
                     } catch (error) {
                         console.log(error);
                         setSubmitting(false);
-                        errorToast("City updated error");
+                        errorToast("Location created error");
 
                     }
                 }}
@@ -189,7 +178,7 @@ const UpdateCity = () => {
                                         />
                                     </span> :
                                     <span>
-                                        Save
+                                        Create
                                     </span>}
                             </button>
                         </div>
@@ -200,4 +189,4 @@ const UpdateCity = () => {
     );
 };
 
-export default UpdateCity;
+export default CreateLocation;
