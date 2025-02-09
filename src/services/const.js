@@ -34,10 +34,10 @@ export const inputData = [
         id: 5, label_title: "Seconds (100km/h)", input_name: "seconds", input_type: "number", place_title: "Enter the second"
     },
     {
-        id: 6, label_title: "Transmission", input_name: "transmission", input_type: "number", place_title: "Enter the number"
+        id: 6, label_title: "Transmission", input_name: "transmission", input_type: "text", place_title: "Enter the number"
     },
     {
-        id: 7, label_title: "Motor", input_name: "motor", input_type: "number", place_title: "Enter the motor"
+        id: 7, label_title: "Motor", input_name: "motor", input_type: "text", place_title: "Enter the motor"
     },
     {
         id: 8, label_title: "Drive side", input_name: "drive_side", input_type: "text", place_title: "Enter the left/right"

@@ -33,7 +33,7 @@ const ModalAlert = () => {
                 whileInView={{ opacity: [0, 1], y: 0, scale: 1 }}
                 viewport={{ once: false, amount: 0.1 }}
                 transition={{ duration: 0.3, ease: "easeInOut", delay: 0.1 }}
-                className={`${modalContent === "create-car" || modalContent === "update-car"? "w-[85%] lg:w-[70%]" : "w-[450px]"} z-30 bg-neutral-800 border-neutral-700 text-white h-max p-[15px] mx-[10px] my-auto rounded-md shadow-md border-[1px]`}>
+                className={`${modalContent === "create-car" || modalContent === "update-car"? "w-[90%] lg:w-[70%]" : "w-[450px] mx-[5%]"} z-30 bg-neutral-800 border-neutral-700 text-white h-max p-[15px] my-auto rounded-md shadow-md border-[1px]`}>
                 <div className='flex justify-between items-center'>
                     <div className='text-[16px] font-semibold'>
                         {
