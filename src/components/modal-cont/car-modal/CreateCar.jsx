@@ -85,7 +85,6 @@ const CreateCar = () => {
             })
             const [ cover, ...images ] = imageFiles
             formData.append("cover", cover)
-            console.log(images)
             images.forEach(item => {
               formData.append("images", item)
             })

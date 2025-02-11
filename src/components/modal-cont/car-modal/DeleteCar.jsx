@@ -15,7 +15,7 @@ const DeleteCar = () => {
     const handleDeleteCateg = async (id) => {
         try {
             setPending(true)
-            const res = await axiosInstance.delete(`/cars/${id}`)
+            await axiosInstance.delete(`/cars/${id}`)
             setPending(false)
             dispatch(fetchCars())
             dispatch(closeModalAlert())

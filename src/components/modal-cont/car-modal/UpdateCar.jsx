@@ -91,234 +91,233 @@ const CreateCar = () => {
             selectData.forEach(item => {
               formData.append(item.select_name, values[item.select_name])
             })
-            
+
 
             if (imageFiles.length > 2) {
-              const [ cover, ...images ] = imageFiles
+              const [cover, ...images] = imageFiles
               formData.append("cover", cover)
               images.forEach(item => {
                 formData.append("images", item)
               })
             }
-      // API-ga yuborish
-      const res = await axiosInstance.put(`/cars/${selectItemId}`, formData)
-      console.log(res)
-      setSubmitting(false);
-      resetForm();
-      dispatch(fetchCars());
-      setPreview(null); // Rasmni tozalash
-      dispatch(closeModalAlert())
-      succsessToast(`Car updated successfully`);
+            // API-ga yuborish
+            await axiosInstance.put(`/cars/${selectItemId}`, formData)
+            setSubmitting(false);
+            resetForm();
+            dispatch(fetchCars());
+            setPreview(null); // Rasmni tozalash
+            dispatch(closeModalAlert())
+            succsessToast(`Car updated successfully`);
           } catch (error) {
-        console.log(error);
-      setSubmitting(false);
-      errorToast("Car updated error");
+            console.log(error);
+            setSubmitting(false);
+            errorToast("Car updated error");
 
           }
         }}
       >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        setFieldValue,
-        isSubmitting,
-      }) => (
-        <form onSubmit={handleSubmit} className="form-data">
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          setFieldValue,
+          isSubmitting,
+        }) => (
+          <form onSubmit={handleSubmit} className="form-data">
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {
-              inputData.map(item => (
-                <div key={item.id} className="flex flex-col" >
-                  <label className="text-[14px] font-semibold" htmlFor={item.input_name}>{item.label_title}</label>
-                  <input
-                    name={item.input_name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values[item.input_name]}
-                    type={item.input_type}
-                    id={item.input_name}
-                    placeholder={item.place_title}
-                    autoComplete={item.input_name}
-                  />
-                  <div className="min-h-[10px] leading-[12px]">
-                    {errors[item.input_name] && touched[item.input_name] && <span className="text-[12px] text-orange-600 font-medium">{errors[item.input_name]}</span>}
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-
-          <div className="flex justify-between gap-2 flex-col-reverse md:flex-row">
-            <div className="flex flex-col w-full md:w-[25%]">
-              <p className="text-[14px] font-medium">Images</p>
-              <div className="border-[2px] relative min-h-[110px] max-h-[110px] bg-zinc-800 border-neutral-600 overflow-hidden hover:border-neutral-500 h-full rounded-md">
-                {preview.length > 0 ? (
-                  <>
-                    <Swiper
-                      ref={swiperRef}
-                      modules={[Navigation]}
-                      spaceBetween={1}
-                      slidesPerView={1}
-                      navigation={{
-                        nextEl: ".swiper-button-next",
-                        prevEl: ".swiper-button-prev"
-                      }}
-                    >
-
-                      {
-                        preview.map((item, index) => (
-                          <SwiperSlide key={index} className="min-h-[110px] max-h-[110px]">
-                            <img src={item} alt="preview-image" className="min-h-[110px] max-h-[110px] w-full object-cover" />
-                          </SwiperSlide>
-                        ))
-                      }
-                    </Swiper>
-                    <button type="button" className="swiper-button-next hover:bg-opacity-40 absolute top-0 bottom-0 w-[20px] text-[20px] flex justify-center items-center right-0 bg-black z-10 bg-opacity-20">
-                      <MdKeyboardArrowRight />
-                    </button>
-                    <button type="button" className="swiper-button-prev hover:bg-opacity-40 absolute top-0 bottom-0 w-[20px] text-[20px] flex justify-center items-center left-0 bg-black z-10 bg-opacity-20">
-                      <MdKeyboardArrowLeft />
-                    </button>
-                  </>
-                ) :
-                  (
-                    <div className="min-h-[110px] max-h-[110px] text-[20px] flex justify-center items-center">
-
-                    </div>
-                  )}
-                <label htmlFor="images" className="absolute top-[50%] left-[50%] text-gray-200 active:scale-95 translate-x-[-50%] translate-y-[-50%] w-[40px] h-[40px] rounded-full hover:bg-opacity-40 cursor-pointer text-[20px] flex justify-center items-center bg-black z-10 bg-opacity-20">
-                  <BiPlusCircle />
-                </label>
-                {fileValidate &&
-                  <motion.div
-                    initial={{ y: "-100%", opacity: 0 }}
-                    animate={{ y: "0%", opacity: 1 }}
-                    exit={{ y: "-100%", opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="absolute top-[5%] left-[5%] right-[5%] text-[11px] font-semibold text-white active:scale-95 translate-x-[50%]  min-w-max rounded-full flex justify-center items-center bg-black z-10 bg-opacity-50">
-                    {fileValidate}
-                  </motion.div>}
-                <input
-                  name="images"
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  id="images"
-                  className="hidden"
-                  onChange={(event) => {
-                    const file = event.currentTarget.files[0];
-                    const maxSizeMB = 1; // Maksimal fayl hajmi (MB)
-                    const maxSizeBytes = maxSizeMB * 1024 * 1024; // MB dan baytga o'tkazish
-
-                    // Fayl hajmini tekshirish
-                    if (file && file.size > maxSizeBytes) {
-                      setFileVaildate("Maximum image size 1MB")
-                      return; // Agar hajmi katta bo'lsa, davom etmang
-                    }
-
-                    if (imageFiles.length == 0) {
-                      setPreview([])
-                    }
-
-
-                    // Rasmni oldindan ko‘rsatish
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        setPreview(prev => [reader.result, ...prev]);
-                        setImageFiles(prev => [file, ...prev])
-                        setFileVaildate("")
-                        goToSlide()
-                      };
-                      reader.readAsDataURL(file);
-                    }
-
-                    setFieldValue("images", imageFiles.length)
-                  }}
-                />
-              </div>
-              <div className="min-h-[10px] leading-[12px]">
-                {errors["images"] && <span className="text-[12px] text-orange-600 font-medium">{errors["images"]}</span>}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 w-full md:w-[75%]">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {
-                selectData.map(item => (
+                inputData.map(item => (
                   <div key={item.id} className="flex flex-col" >
-                    <label className="text-[14px] font-semibold" htmlFor={item.select_name}>{item.label_title}</label>
-                    <select
-                      name={item.select_name}
+                    <label className="text-[14px] font-semibold" htmlFor={item.input_name}>{item.label_title}</label>
+                    <input
+                      name={item.input_name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values[item.select_name]}
-                      type="text"
-                      id={item.select_name}
-                      autoComplete={item.select_name}
-                    >
-                      <option>---</option>
-                      {item.title === "categories" &&
-                        categories.map(item => (
-                          <option key={item.id} value={item.id}>{item.name_ru}</option>
-                        ))}
-                      {item.title === "brands" &&
-                        brands.map(item => (
-                          <option key={item.id} value={item.id}>{item.title}</option>
-                        ))}
-                      {item.title === "models" &&
-                        models.map(item => (
-                          <option key={item.id} value={item.id}>{item.name}</option>
-                        ))}
-                      {item.title === "cities" &&
-                        cities.map(item => (
-                          <option key={item.id} value={item.id}>{item.name}</option>
-                        ))}
-                      {item.title === "locations" &&
-                        locations.map(item => (
-                          <option key={item.id} value={item.id}>{item.name}</option>
-                        ))}
-                      {item.title === "checkbox" &&
-                        <>
-                          <option value={true}>true</option>
-                          <option value={false}>false</option>
-                        </>
-                      }
-                    </select>
+                      value={values[item.input_name]}
+                      type={item.input_type}
+                      id={item.input_name}
+                      placeholder={item.place_title}
+                      autoComplete={item.input_name}
+                    />
                     <div className="min-h-[10px] leading-[12px]">
-                      {errors[item.select_name] && touched[item.select_name] && <span className="text-[12px] text-orange-600 font-medium">{errors[item.select_name]}</span>}
+                      {errors[item.input_name] && touched[item.input_name] && <span className="text-[12px] text-orange-600 font-medium">{errors[item.input_name]}</span>}
                     </div>
                   </div>
                 ))
               }
             </div>
-          </div>
+
+            <div className="flex justify-between gap-2 flex-col-reverse md:flex-row">
+              <div className="flex flex-col w-full md:w-[25%]">
+                <p className="text-[14px] font-medium">Images</p>
+                <div className="border-[2px] relative min-h-[110px] max-h-[110px] bg-zinc-800 border-neutral-600 overflow-hidden hover:border-neutral-500 h-full rounded-md">
+                  {preview.length > 0 ? (
+                    <>
+                      <Swiper
+                        ref={swiperRef}
+                        modules={[Navigation]}
+                        spaceBetween={1}
+                        slidesPerView={1}
+                        navigation={{
+                          nextEl: ".swiper-button-next",
+                          prevEl: ".swiper-button-prev"
+                        }}
+                      >
+
+                        {
+                          preview.map((item, index) => (
+                            <SwiperSlide key={index} className="min-h-[110px] max-h-[110px]">
+                              <img src={item} alt="preview-image" className="min-h-[110px] max-h-[110px] w-full object-cover" />
+                            </SwiperSlide>
+                          ))
+                        }
+                      </Swiper>
+                      <button type="button" className="swiper-button-next hover:bg-opacity-40 absolute top-0 bottom-0 w-[20px] text-[20px] flex justify-center items-center right-0 bg-black z-10 bg-opacity-20">
+                        <MdKeyboardArrowRight />
+                      </button>
+                      <button type="button" className="swiper-button-prev hover:bg-opacity-40 absolute top-0 bottom-0 w-[20px] text-[20px] flex justify-center items-center left-0 bg-black z-10 bg-opacity-20">
+                        <MdKeyboardArrowLeft />
+                      </button>
+                    </>
+                  ) :
+                    (
+                      <div className="min-h-[110px] max-h-[110px] text-[20px] flex justify-center items-center">
+
+                      </div>
+                    )}
+                  <label htmlFor="images" className="absolute top-[50%] left-[50%] text-gray-200 active:scale-95 translate-x-[-50%] translate-y-[-50%] w-[40px] h-[40px] rounded-full hover:bg-opacity-40 cursor-pointer text-[20px] flex justify-center items-center bg-black z-10 bg-opacity-20">
+                    <BiPlusCircle />
+                  </label>
+                  {fileValidate &&
+                    <motion.div
+                      initial={{ y: "-100%", opacity: 0 }}
+                      animate={{ y: "0%", opacity: 1 }}
+                      exit={{ y: "-100%", opacity: 0 }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      className="absolute top-[5%] left-[5%] right-[5%] text-[11px] font-semibold text-white active:scale-95 translate-x-[50%]  min-w-max rounded-full flex justify-center items-center bg-black z-10 bg-opacity-50">
+                      {fileValidate}
+                    </motion.div>}
+                  <input
+                    name="images"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    id="images"
+                    className="hidden"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files[0];
+                      const maxSizeMB = 1; // Maksimal fayl hajmi (MB)
+                      const maxSizeBytes = maxSizeMB * 1024 * 1024; // MB dan baytga o'tkazish
+
+                      // Fayl hajmini tekshirish
+                      if (file && file.size > maxSizeBytes) {
+                        setFileVaildate("Maximum image size 1MB")
+                        return; // Agar hajmi katta bo'lsa, davom etmang
+                      }
+
+                      if (imageFiles.length == 0) {
+                        setPreview([])
+                      }
 
 
-          <hr className="my-[5px]" />
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`${isSubmitting ? "cursor-wait" : "cursor-pointer"} btn-form`}
-            >
-              {isSubmitting ?
-                <span className="inline-block max-h-[32px] max-w-[50px]">
-                  <Player
-                    src={sending}
-                    loop
-                    autoplay
+                      // Rasmni oldindan ko‘rsatish
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          setPreview(prev => [reader.result, ...prev]);
+                          setImageFiles(prev => [file, ...prev])
+                          setFileVaildate("")
+                          goToSlide()
+                        };
+                        reader.readAsDataURL(file);
+                      }
+
+                      setFieldValue("images", imageFiles.length)
+                    }}
                   />
-                </span> :
-                <span>
-                  Save
-                </span>}
-            </button>
-          </div>
-        </form>
-      )}
-    </Formik>
+                </div>
+                <div className="min-h-[10px] leading-[12px]">
+                  {errors["images"] && <span className="text-[12px] text-orange-600 font-medium">{errors["images"]}</span>}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 w-full md:w-[75%]">
+                {
+                  selectData.map(item => (
+                    <div key={item.id} className="flex flex-col" >
+                      <label className="text-[14px] font-semibold" htmlFor={item.select_name}>{item.label_title}</label>
+                      <select
+                        name={item.select_name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values[item.select_name]}
+                        type="text"
+                        id={item.select_name}
+                        autoComplete={item.select_name}
+                      >
+                        <option>---</option>
+                        {item.title === "categories" &&
+                          categories.map(item => (
+                            <option key={item.id} value={item.id}>{item.name_ru}</option>
+                          ))}
+                        {item.title === "brands" &&
+                          brands.map(item => (
+                            <option key={item.id} value={item.id}>{item.title}</option>
+                          ))}
+                        {item.title === "models" &&
+                          models.map(item => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                          ))}
+                        {item.title === "cities" &&
+                          cities.map(item => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                          ))}
+                        {item.title === "locations" &&
+                          locations.map(item => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                          ))}
+                        {item.title === "checkbox" &&
+                          <>
+                            <option value={true}>true</option>
+                            <option value={false}>false</option>
+                          </>
+                        }
+                      </select>
+                      <div className="min-h-[10px] leading-[12px]">
+                        {errors[item.select_name] && touched[item.select_name] && <span className="text-[12px] text-orange-600 font-medium">{errors[item.select_name]}</span>}
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+
+
+            <hr className="my-[5px]" />
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`${isSubmitting ? "cursor-wait" : "cursor-pointer"} btn-form`}
+              >
+                {isSubmitting ?
+                  <span className="inline-block max-h-[32px] max-w-[50px]">
+                    <Player
+                      src={sending}
+                      loop
+                      autoplay
+                    />
+                  </span> :
+                  <span>
+                    Save
+                  </span>}
+              </button>
+            </div>
+          </form>
+        )}
+      </Formik>
     </div >
   );
 };
